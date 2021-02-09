@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import SDWebImage
 
 class FeedTextOnlyCell: UITableViewCell {
+    
+    typealias GenericAction = () -> ()
+    private var moreAction: GenericAction?
+    private var shareAction: GenericAction?
     
     private let containerView = UIView()
     private let profileImageView = UIImageView()
@@ -21,6 +26,7 @@ class FeedTextOnlyCell: UITableViewCell {
     private let commentLabel = UILabel()
     private let shareImageView = UIImageView()
     private let shareLabel = UILabel()
+    private let shareButton = UIButton(type: .roundedRect)
     
     
     override func prepareForReuse() {
@@ -36,12 +42,34 @@ class FeedTextOnlyCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(post: Post) {
-        profileImageView.image = UIImage(named: "profile-image")
+    func configure(post: Post, moreButtonAction:@escaping GenericAction, shareButtonAction: @escaping GenericAction) {
+        self.moreAction = moreButtonAction
+        self.shareAction = shareButtonAction
+        
+        if let urlString = post.authorImgUrl {
+            profileImageView.sd_setImage(with: URL(string: urlString), placeholderImage: nil)
+        } else {
+            profileImageView.image = UIImage(systemName: "person.circle")?.withRenderingMode(.alwaysTemplate)
+            profileImageView.tintColor = .lightGray
+        }
+        
         nameLabel.text = post.authorName
-        timeLabel.text = "25m ago"
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .abbreviated
+        
+        let relativeDate = formatter.localizedString(for: Date(timeIntervalSince1970: post.created), relativeTo: Date())
+        timeLabel.text = relativeDate
         primaryTextLabel.text = post.text
-        numberOfCommentsLabel.text = "\(post.commentCount) comments"
+        
+        if post.commentCount == 0 {
+            numberOfCommentsLabel.text = "Be the first to comment"
+        } else if post.commentCount == 1 {
+            numberOfCommentsLabel.text = "1 comment"
+        } else {
+            numberOfCommentsLabel.text = "\(post.commentCount) comments"
+        }
+        
+        
     }
     
 }
@@ -99,6 +127,7 @@ private extension FeedTextOnlyCell {
         
         moreButton.translatesAutoresizingMaskIntoConstraints = false
         moreButton.setImage(UIImage(named: "more-button")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        moreButton.addTarget(self, action: #selector(moreButtonAction), for: .touchUpInside)
         containerView.addSubview(moreButton)
         
         moreButton.topAnchor.constraint(equalTo: containerView.topAnchor,constant: 4.0).isActive = true
@@ -124,7 +153,7 @@ private extension FeedTextOnlyCell {
         
         numberOfCommentsLabel.topAnchor.constraint(equalTo: primaryTextLabel.bottomAnchor, constant: 12.0).isActive = true
         numberOfCommentsLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 14.0).isActive = true
-        numberOfCommentsLabel.heightAnchor.constraint(equalToConstant: 16.0).isActive = true
+        
         
         separator.translatesAutoresizingMaskIntoConstraints = false
         separator.backgroundColor = UIColor.color(.primaryTextColor).withAlphaComponent(0.10)
@@ -162,7 +191,7 @@ private extension FeedTextOnlyCell {
         containerView.addSubview(shareImageView)
         
         shareImageView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 14.0).isActive = true
-        shareImageView.leadingAnchor.constraint(equalTo: commentLabel.trailingAnchor, constant: 28.0).isActive = true
+        
         shareImageView.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
         shareImageView.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         
@@ -176,7 +205,41 @@ private extension FeedTextOnlyCell {
         shareLabel.leadingAnchor.constraint(equalTo: shareImageView.trailingAnchor, constant: 6.0).isActive = true
         shareLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         
+        shareButton.translatesAutoresizingMaskIntoConstraints = false
+        shareButton.addTarget(self, action: #selector(shareButtonAction), for: .touchUpInside)
+        containerView.addSubview(shareButton)
         
+        shareButton.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 0.0).isActive = true
+        
+        shareButton.trailingAnchor.constraint(equalTo: shareLabel.trailingAnchor).isActive = true
+        shareButton.heightAnchor.constraint(equalToConstant: 48.0).isActive = true
+        
+        if !FeatureFlag.comments.enabled() {
+            commentLabel.isHidden = true
+            commentImageView.isHidden = true
+            numberOfCommentsLabel.isHidden = true
+            shareImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 14.0).isActive = true
+            shareButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 14.0).isActive = true
+            numberOfCommentsLabel.heightAnchor.constraint(equalToConstant: 0.0).isActive = true
+        } else {
+            shareImageView.leadingAnchor.constraint(equalTo: commentLabel.trailingAnchor, constant: 28.0).isActive = true
+            shareButton.leadingAnchor.constraint(equalTo: commentLabel.trailingAnchor, constant: 28.0).isActive = true
+            numberOfCommentsLabel.heightAnchor.constraint(equalToConstant: 16.0).isActive = true
+        }
     }
     
+}
+
+private extension FeedTextOnlyCell {
+    
+    @objc
+    func moreButtonAction() {
+        moreAction?()
+    }
+
+
+    @objc
+    func shareButtonAction() {
+        shareAction?()
+    }
 }

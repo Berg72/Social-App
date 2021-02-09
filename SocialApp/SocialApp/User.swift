@@ -25,7 +25,8 @@ struct User : SMAObject {
 }
 
 enum UserRole: String, Codable {
-    case user 
+    case user
+    case admin
 }
 
 extension User {

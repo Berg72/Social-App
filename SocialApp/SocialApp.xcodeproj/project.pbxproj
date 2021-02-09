@@ -28,6 +28,11 @@
 		D999C49A2596E17000D317CE /* SocialAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D999C4992596E17000D317CE /* SocialAppTests.swift */; };
 		D999C4A52596E17100D317CE /* SocialAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D999C4A42596E17100D317CE /* SocialAppUITests.swift */; };
 		D999C4B62596E23700D317CE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D999C4B52596E23700D317CE /* GoogleService-Info.plist */; };
+		D9A7C2E025C740340040CC15 /* ModerationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A7C2DF25C740340040CC15 /* ModerationController.swift */; };
+		D9A7C38525C7AEDA0040CC15 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A7C38425C7AEDA0040CC15 /* ProfileController.swift */; };
+		D9A7C42125CC27970040CC15 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A7C42025CC27970040CC15 /* FeatureFlag.swift */; };
+		D9DDC4DC25D08CBF009226E7 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DDC4DB25D08CBF009226E7 /* SettingsController.swift */; };
+		D9DDC50025D097F4009226E7 /* WebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DDC4FF25D097F4009226E7 /* WebController.swift */; };
 		D9FBEBB825A40DDF0010CEC0 /* SplashController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FBEBB725A40DDF0010CEC0 /* SplashController.swift */; };
 		EF99F8AEB6678043BBD32D1A /* Pods_SocialApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA929412F332FF131672D563 /* Pods_SocialApp.framework */; };
 		F24531DA1DCACD101C3B300D /* Pods_SocialAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F601694FEAD07B4D29F5BA11 /* Pods_SocialAppTests.framework */; };
@@ -83,6 +88,11 @@
 		D999C4A42596E17100D317CE /* SocialAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAppUITests.swift; sourceTree = "<group>"; };
 		D999C4A62596E17100D317CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D999C4B52596E23700D317CE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D9A7C2DF25C740340040CC15 /* ModerationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModerationController.swift; sourceTree = "<group>"; };
+		D9A7C38425C7AEDA0040CC15 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
+		D9A7C42025CC27970040CC15 /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
+		D9DDC4DB25D08CBF009226E7 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		D9DDC4FF25D097F4009226E7 /* WebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebController.swift; sourceTree = "<group>"; };
 		D9FBEBB725A40DDF0010CEC0 /* SplashController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashController.swift; sourceTree = "<group>"; };
 		D9FBEBDE25A955DD0010CEC0 /* SocialApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SocialApp.entitlements; sourceTree = "<group>"; };
 		F1ABB87441F955ACC8CF1A4E /* Pods-SocialAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialAppTests.debug.xcconfig"; path = "Target Support Files/Pods-SocialAppTests/Pods-SocialAppTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -134,6 +144,7 @@
 		D9240AD525B1C15B005FC3FB /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				D9A7C2DE25C7400E0040CC15 /* Moderation */,
 				D9240AD625B1C18B005FC3FB /* HomeController.swift */,
 				D97DAC7925BE0C4100B2FF1D /* ComposeController.swift */,
 				D9240B1325B2AF60005FC3FB /* Cells */,
@@ -212,6 +223,9 @@
 				D9FBEBB725A40DDF0010CEC0 /* SplashController.swift */,
 				D9240B0E25B2A9AA005FC3FB /* FeedCell.swift */,
 				D9240AD025ABDC80005FC3FB /* Tabbar.swift */,
+				D9DDC4DA25D08CAF009226E7 /* Settings */,
+				D9A7C41F25CC27790040CC15 /* FeatureFlag */,
+				D9A7C38325C7AEC80040CC15 /* Profile */,
 				D9240B4A25B6E11A005FC3FB /* Database */,
 				D9240ADE25B1C4D5005FC3FB /* Extensions */,
 				D9240AD525B1C15B005FC3FB /* Home */,
@@ -239,6 +253,39 @@
 				D999C4A62596E17100D317CE /* Info.plist */,
 			);
 			path = SocialAppUITests;
+			sourceTree = "<group>";
+		};
+		D9A7C2DE25C7400E0040CC15 /* Moderation */ = {
+			isa = PBXGroup;
+			children = (
+				D9A7C2DF25C740340040CC15 /* ModerationController.swift */,
+			);
+			name = Moderation;
+			sourceTree = "<group>";
+		};
+		D9A7C38325C7AEC80040CC15 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				D9A7C38425C7AEDA0040CC15 /* ProfileController.swift */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		D9A7C41F25CC27790040CC15 /* FeatureFlag */ = {
+			isa = PBXGroup;
+			children = (
+				D9A7C42025CC27970040CC15 /* FeatureFlag.swift */,
+			);
+			name = FeatureFlag;
+			sourceTree = "<group>";
+		};
+		D9DDC4DA25D08CAF009226E7 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D9DDC4DB25D08CBF009226E7 /* SettingsController.swift */,
+				D9DDC4FF25D097F4009226E7 /* WebController.swift */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -484,14 +531,19 @@
 				D9240B4C25B6E130005FC3FB /* Database.swift in Sources */,
 				D999C4832596E16E00D317CE /* AppDelegate.swift in Sources */,
 				D999C4852596E16E00D317CE /* SceneDelegate.swift in Sources */,
+				D9A7C38525C7AEDA0040CC15 /* ProfileController.swift in Sources */,
 				D9240B5925B6E149005FC3FB /* Post.swift in Sources */,
+				D9A7C2E025C740340040CC15 /* ModerationController.swift in Sources */,
 				D9FBEBB825A40DDF0010CEC0 /* SplashController.swift in Sources */,
 				D9240BAF25B6EDDE005FC3FB /* DocumentSnapshot.swift in Sources */,
 				D9240B1D25B2B310005FC3FB /* UIColor.swift in Sources */,
 				D9240B1525B2AF7F005FC3FB /* FeedTextOnlyCell.swift in Sources */,
 				D9240AD125ABDC80005FC3FB /* Tabbar.swift in Sources */,
+				D9A7C42125CC27970040CC15 /* FeatureFlag.swift in Sources */,
 				D9240B5425B6E13D005FC3FB /* User.swift in Sources */,
 				D97DAC7A25BE0C4100B2FF1D /* ComposeController.swift in Sources */,
+				D9DDC4DC25D08CBF009226E7 /* SettingsController.swift in Sources */,
+				D9DDC50025D097F4009226E7 /* WebController.swift in Sources */,
 				D9240AD725B1C18B005FC3FB /* HomeController.swift in Sources */,
 				D9240AE025B1C4EE005FC3FB /* UITableViewCell.swift in Sources */,
 				D9240B3425B2B8C4005FC3FB /* CALayer.swift in Sources */,

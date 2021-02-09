@@ -62,7 +62,7 @@ private extension SplashController {
         
         let backGroundImage = UIImageView(image: UIImage(named: "BackGroundImage")?.withRenderingMode(.alwaysOriginal))
         backGroundImage.translatesAutoresizingMaskIntoConstraints = false
-        backGroundImage.contentMode = .scaleToFill
+        backGroundImage.contentMode = .scaleAspectFill
         
         view.addSubview(backGroundImage)
         
@@ -75,8 +75,9 @@ private extension SplashController {
         
         let appTitleLabel = UILabel()
         appTitleLabel.textAlignment = .center
-        appTitleLabel.text = "SocialApp"
+        appTitleLabel.text = "PetTime"
         appTitleLabel.font = UIFont.systemFont(ofSize: 42.0, weight: .bold)
+        appTitleLabel.textColor = .white
         appTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(appTitleLabel)
         
@@ -88,8 +89,9 @@ private extension SplashController {
         
         let titleDescriptonLabel = UILabel()
         titleDescriptonLabel.textAlignment = .center
-        titleDescriptonLabel.text = "An Informative Description of the App"
+        titleDescriptonLabel.text = "A Meeting Place for your Beloved Pets"
         titleDescriptonLabel.font = UIFont.systemFont(ofSize: 21.0, weight: .regular)
+        titleDescriptonLabel.textColor = .white
         titleDescriptonLabel.translatesAutoresizingMaskIntoConstraints = false
         titleDescriptonLabel.lineBreakMode = .byWordWrapping
         titleDescriptonLabel.numberOfLines = 0
@@ -111,9 +113,46 @@ private extension SplashController {
         appleButton.heightAnchor.constraint(equalToConstant: 52.0).isActive = true
         appleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
+        let termsButton = UIButton(type: .roundedRect)
+        termsButton.translatesAutoresizingMaskIntoConstraints = false
+        termsButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0, weight: .light)
+        termsButton.setTitle("Terms & Conditions", for: .normal)
+        termsButton.setTitleColor(.white, for: .normal)
+        termsButton.addTarget(self, action: #selector(displayTermsAndConditions), for: .touchUpInside)
+        view.addSubview(termsButton)
+        
+        termsButton.leadingAnchor.constraint(equalTo: appleButton.leadingAnchor).isActive = true
+        termsButton.topAnchor.constraint(equalTo: appleButton.bottomAnchor).isActive = true
+        termsButton.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
+        
+        let privacyButton = UIButton(type: .roundedRect)
+        privacyButton.translatesAutoresizingMaskIntoConstraints = false
+        privacyButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0, weight: .light)
+        privacyButton.setTitle("Privacy Policy", for: .normal)
+        privacyButton.setTitleColor(.white, for: .normal)
+        privacyButton.addTarget(self, action: #selector(displayPrivacyPolicy), for: .touchUpInside)
+        view.addSubview(privacyButton)
+        
+        privacyButton.trailingAnchor.constraint(equalTo: appleButton.trailingAnchor).isActive = true
+        privacyButton.topAnchor.constraint(equalTo: appleButton.bottomAnchor).isActive = true
+        privacyButton.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
         
         
-        
+    }
+    
+    @objc
+    func displayPrivacyPolicy() {
+        guard let url = URL(string: "https://social-app-37fb9.web.app/privacy.html") else { return }
+        let vc = WebController(url: url)
+        let nav = UINavigationController(rootViewController: vc)
+        present(nav, animated: true, completion: nil)
+    }
+    @objc
+    func displayTermsAndConditions() {
+        guard let url = URL(string: "https://social-app-37fb9.web.app/terms.html") else { return }
+        let vc = WebController(url: url)
+        let nav = UINavigationController(rootViewController: vc)
+        present(nav, animated: true, completion: nil)
     }
         
 }
