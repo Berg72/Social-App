@@ -81,7 +81,7 @@ private extension ProfileController {
             profileImageView.image = UIImage(systemName: "person.circle")?.withRenderingMode(.alwaysTemplate)
         }
         
-        profileImageView.image = UIImage(systemName: "person.circle")?.withRenderingMode(.alwaysTemplate)
+        
         profileImageView.tintColor = .lightGray
         lightImgBackgroundView.addSubview(profileImageView)
         
