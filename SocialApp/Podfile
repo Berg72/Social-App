@@ -12,6 +12,7 @@ target 'SocialApp' do
   pod 'Firebase/Storage'
   pod 'CodableFirebase'
   pod 'SDWebImage'
+  pod 'Firebase/Crashlytics'
 
   target 'SocialAppTests' do
     inherit! :search_paths

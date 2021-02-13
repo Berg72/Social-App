@@ -15,9 +15,9 @@ enum FeatureFlag {
     func enabled() -> Bool {
         switch self {
         case .tabs:
-            return true
+            return false
         case .comments:
-            return true
+            return false
             
         }
     }
