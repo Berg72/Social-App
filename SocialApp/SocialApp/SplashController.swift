@@ -75,7 +75,7 @@ private extension SplashController {
         
         let appTitleLabel = UILabel()
         appTitleLabel.textAlignment = .center
-        appTitleLabel.text = "PetTime"
+        appTitleLabel.text = "Pet Living"
         appTitleLabel.font = UIFont.systemFont(ofSize: 42.0, weight: .bold)
         appTitleLabel.textColor = .white
         appTitleLabel.translatesAutoresizingMaskIntoConstraints = false
