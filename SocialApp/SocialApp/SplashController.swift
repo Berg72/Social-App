@@ -269,6 +269,9 @@ extension SplashController: ASAuthorizationControllerDelegate {
                         print(error)
                         return
                     }
+                    Database.shared.currentUser = user
+                    let tabbar = Tabbar()
+                    self.navigationController?.pushViewController(tabbar, animated: true)
                 }
                 
                 return
