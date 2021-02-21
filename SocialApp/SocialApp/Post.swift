@@ -29,6 +29,7 @@ struct Post: SMAObject {
 }
 
 extension Post {
+    
     static func getPost(onComplete: @escaping (_ posts: [Post]?, _ error: Error?) -> ()) {
         Database.shared.db.collection(collectionName.rawValue).whereField("moderated", isEqualTo: true).whereField("visibleToPublic", isEqualTo: true).getDocuments { (snapshot, error) in
             
@@ -79,5 +80,28 @@ extension Post {
             onComplete(objects, nil)
         }
     }
+    static func getPost(postId: String, onComplete: @escaping (_ post: Post?, _ error: Error?) -> ()) {
+        Database.shared.db.collection(collectionName.rawValue).document(postId).getDocument { (snapshot, error) in
+            if let error = error {
+                onComplete(nil, error)
+                return
+            }
+            
+            guard let documents = snapshot else {
+                onComplete(nil, nil)
+                return
+            }
+            
+            do {
+                let obj = try documents.decode(as: Post.self)
+                onComplete(obj, nil)
+            } catch {
+                print(error)
+                onComplete(nil, error)
+            }
+            
+        
+    }
+}
 
 }

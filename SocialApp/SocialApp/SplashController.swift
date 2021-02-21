@@ -28,26 +28,67 @@ class SplashController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let userId = Auth.auth().currentUser?.uid {
-            User.getUser(userID: userId) { (user, error) in
-                guard let user = user else {
-                    print(error)
-                    do {
-                        try Auth.auth().signOut()
-                    } catch {
-                        print(error)
+        UNUserNotificationCenter.current().delegate = UIApplication.shared.delegate as?
+            UNUserNotificationCenterDelegate
+        UIApplication.shared.registerForRemoteNotifications()
+        
+        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            switch settings.authorizationStatus {
+            case .notDetermined:
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (success, error) in
+                    DispatchQueue.main.async {
+                        if let userId = Auth.auth().currentUser?.uid {
+                            User.getUser(userID: userId) { (user, error) in
+                                guard let user = user else {
+                                    print(error)
+                                    do {
+                                        try Auth.auth().signOut()
+                                    } catch {
+                                        print(error)
+                                    }
+                                    return
+                                }
+                                Database.shared.currentUser = user
+                                let tabbar = Tabbar()
+                                self.navigationController?.pushViewController(tabbar, animated: true)
+                            }
+                            
+                        } else {
+                            UIViewPropertyAnimator(duration: 0.35, dampingRatio: 1.0) {
+                                self.appleButton.alpha = 1.0
+                            }.startAnimation()
+                        }
                     }
-                    return
+                    
                 }
-                Database.shared.currentUser = user
-                let tabbar = Tabbar()
-                self.navigationController?.pushViewController(tabbar, animated: true)
+            default:()
+                DispatchQueue.main.async {
+                    if let userId = Auth.auth().currentUser?.uid {
+                        User.getUser(userID: userId) { (user, error) in
+                            guard let user = user else {
+                                print(error)
+                                do {
+                                    try Auth.auth().signOut()
+                                } catch {
+                                    print(error)
+                                }
+                                return
+                            }
+                            Database.shared.currentUser = user
+                            let tabbar = Tabbar()
+                            self.navigationController?.pushViewController(tabbar, animated: true)
+                        }
+                        
+                    } else {
+                        UIViewPropertyAnimator(duration: 0.35, dampingRatio: 1.0) {
+                            self.appleButton.alpha = 1.0
+                        }.startAnimation()
+                }
             }
-            
-        } else {
-            UIViewPropertyAnimator(duration: 0.35, dampingRatio: 1.0) {
-                self.appleButton.alpha = 1.0
-            }.startAnimation()
+        }
+        
+
+        
             
         }
     }

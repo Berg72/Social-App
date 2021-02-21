@@ -12,6 +12,7 @@ import FirebaseFirestore
 enum CollectionName: String {
     case User
     case Post
+    case Alert
     
 }
 
