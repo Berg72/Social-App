@@ -37,7 +37,7 @@ private extension ComposeController {
     
     func setupView() {
         view.backgroundColor = .white
-        navigationItem.title = "Compsoe Post"
+        navigationItem.title = "Compose Post"
         
         let postButton = UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(postButtonAction))
         postButton.tintColor = .color(.primaryTextColor)
@@ -87,7 +87,13 @@ private extension ComposeController {
         textView.textColor = .color(.primaryTextColor)
         view.addSubview(textView)
         
-        profileImageView.image = UIImage(named: "profile-image")
+        if let urlString = Database.shared.currentUser?.profileImageUrl {
+            profileImageView.sd_setImage(with: URL(string: urlString), placeholderImage: nil)
+        } else {
+            profileImageView.image = UIImage(systemName: "person.circle")?.withRenderingMode(.alwaysTemplate)
+            profileImageView.tintColor = .lightGray
+        }
+        
         nameLabel.text = Database.shared.currentUser?.name
         timeLabel.text = "Now"
         

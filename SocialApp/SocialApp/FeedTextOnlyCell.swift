@@ -42,7 +42,7 @@ class FeedTextOnlyCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(post: Post, moreButtonAction:@escaping GenericAction, shareButtonAction: @escaping GenericAction) {
+    func configure(post: Post, details: Bool = false, moreButtonAction:@escaping GenericAction, shareButtonAction: @escaping GenericAction) {
         self.moreAction = moreButtonAction
         self.shareAction = shareButtonAction
         
@@ -59,6 +59,12 @@ class FeedTextOnlyCell: UITableViewCell {
         
         let relativeDate = formatter.localizedString(for: Date(timeIntervalSince1970: post.created), relativeTo: Date())
         timeLabel.text = relativeDate
+        
+        if details {
+            primaryTextLabel.numberOfLines = 0
+            primaryTextLabel.lineBreakMode = .byWordWrapping
+        }
+        
         primaryTextLabel.text = post.text
         
         if post.commentCount == 0 {

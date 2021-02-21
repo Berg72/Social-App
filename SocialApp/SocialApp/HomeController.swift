@@ -128,8 +128,12 @@ private extension HomeController {
     
     func sharePost(post: Post) {
         let items = [post.text]
-        let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        present(ac, animated: true)
+        let alert = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.minX, y: self.view.bounds.midY, width: 0, height: 0)
+        }
+        present(alert, animated: true)
     }
 
 }
@@ -161,6 +165,9 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let post = datasource[indexPath.row]
+        let vc = PostDetailsController(post: post)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

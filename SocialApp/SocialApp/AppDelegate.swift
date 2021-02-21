@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseMessaging
 
 
 @main
@@ -16,8 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
+        Messaging.messaging().delegate = self
         // Override point for customization after application launch.
         try! Auth.auth().signOut()
+        
+        
+        
         return true
     }
 
@@ -35,6 +40,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+}
+
+extension AppDelegate: MessagingDelegate {
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        UserDefaults.standard.set(fcmToken, forKey: "apns-token")
+        guard var user = Database.shared.currentUser else { return }
+        user.apnsToken = fcmToken
+        Database.shared.save(user) { (user, error) in
+            guard let user = user else { return }
+            Database.shared.currentUser = user
+        }
+        
+            
+    }
+    
+}

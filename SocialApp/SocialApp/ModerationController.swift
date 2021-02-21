@@ -88,9 +88,9 @@ private extension ModerationController {
 
     }
     
-    func sharePost(post: Post) {
-        
-    }
+//    func sharePost(post: Post) {
+//
+//    }
     
 }
 
@@ -111,7 +111,7 @@ extension ModerationController: UITableViewDelegate, UITableViewDataSource {
             cell.configure(post: datasource[indexPath.row]) {
                 self.displayMoreOptions(post: self.datasource[indexPath.row])
             } shareButtonAction: {
-                self.sharePost(post: self.datasource[indexPath.row])
+                
             }
         }
         

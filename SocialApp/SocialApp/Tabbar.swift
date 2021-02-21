@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class Tabbar: UITabBarController {
  
     override func viewDidLoad() {
@@ -14,6 +15,19 @@ class Tabbar: UITabBarController {
          setupView()
         
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let token = UserDefaults.standard.string(forKey: "apns-token") else { return }
+        guard var user = Database.shared.currentUser else { return }
+        user.apnsToken = token
+        Database.shared.save(user) { (user, error) in
+            guard let user = user else { return }
+            Database.shared.currentUser = user
+            
+        }
+    }
+    
 }
 
 private extension Tabbar {
@@ -23,17 +37,20 @@ private extension Tabbar {
         navigationController?.setNavigationBarHidden(true, animated: false)
         
         
+        
+        
         if FeatureFlag.tabs.enabled() {
             let nav1 = UINavigationController(rootViewController: HomeController())
             let nav2 = UINavigationController(rootViewController: UIViewController())
             let nav3 = UINavigationController(rootViewController: UIViewController())
-            let nav4 = UINavigationController(rootViewController: ProfileController())
-            let nav5 = UINavigationController(rootViewController: UIViewController())
+            let nav4 = UINavigationController(rootViewController: AlertsController())
+            let nav5 = UINavigationController(rootViewController: ProfileController())
             self.viewControllers = [nav1, nav2, nav3, nav4, nav5]
         } else {
             let nav1 = UINavigationController(rootViewController: HomeController())
-            let nav5 = UINavigationController(rootViewController: UIViewController())
-            self.viewControllers = [nav1, nav5]
+            let nav4 = UINavigationController(rootViewController: AlertsController())
+            let nav5 = UINavigationController(rootViewController: ProfileController())
+            self.viewControllers = [nav1, nav4, nav5]
         }
         
         
@@ -62,14 +79,14 @@ private extension Tabbar {
             }
             
             if items.count > 4 {
-                items[3].title = "Profile"
+                items[3].title = "Alerts"
                 items[3].setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
                 items[3].image = UIImage(named: "􀉭")?.withRenderingMode(.alwaysOriginal)
                 items[3].selectedImage = UIImage(named: "􀉮")?.withRenderingMode(.alwaysOriginal)
             }
             
             if let item = items.last {
-                item.title = "Alerts"
+                item.title = "Profile"
                 item.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
                 item.image = UIImage(named: "􀋙")?.withRenderingMode(.alwaysOriginal)
                 item.selectedImage = UIImage(named: "􀋚")?.withRenderingMode(.alwaysOriginal)
@@ -82,13 +99,20 @@ private extension Tabbar {
                 item.image = UIImage(named: "􀎞")?.withRenderingMode(.alwaysOriginal)
                 item.selectedImage = UIImage(named: "􀎟")?.withRenderingMode(.alwaysOriginal)
             }
+            
+            if items.count > 2 {
+                items[1].title = "Alerts"
+                items[1].setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
+                items[1].image = UIImage(named: "􀋙")?.withRenderingMode(.alwaysOriginal)
+                items[1].selectedImage = UIImage(named: "􀋚")?.withRenderingMode(.alwaysOriginal)
+            }
     
             
             if let item = items.last {
-                item.title = "Alerts"
+                item.title = "Profile"
                 item.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
-                item.image = UIImage(named: "􀋙")?.withRenderingMode(.alwaysOriginal)
-                item.selectedImage = UIImage(named: "􀋚")?.withRenderingMode(.alwaysOriginal)
+                item.image = UIImage(named: "􀉭")?.withRenderingMode(.alwaysOriginal)
+                item.selectedImage = UIImage(named: "􀉮")?.withRenderingMode(.alwaysOriginal)
             }
         
     }

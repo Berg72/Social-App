@@ -12,6 +12,7 @@ enum AssetColorName: String, Codable {
     case shadowColor = "Shadow Color"
     case primaryTextColor = "Primary Text Color"
     case secondaryTextColor = "Secondary Text Color"
+    case selectedColor = "Selected Color"
 }
 
 
