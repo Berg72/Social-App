@@ -42,7 +42,7 @@ class AlertCell: UITableViewCell {
         
         let attrAuthorName = NSMutableAttributedString(string: authorName, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17.0, weight: .regular), NSAttributedString.Key.foregroundColor: UIColor.color(.primaryTextColor)])
         
-        let attrSubject = NSAttributedString(string: authorName, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17.0, weight: .semibold), NSAttributedString.Key.foregroundColor: UIColor.color(.primaryTextColor)])
+        let attrSubject = NSAttributedString(string: " \(subject.lowercased())", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17.0, weight: .semibold), NSAttributedString.Key.foregroundColor: UIColor.color(.primaryTextColor)])
         
         attrAuthorName.append(attrSubject)
         
