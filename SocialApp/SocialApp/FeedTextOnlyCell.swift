@@ -20,13 +20,22 @@ class FeedTextOnlyCell: UITableViewCell {
     private let timeLabel = UILabel()
     private let moreButton = UIButton(type: .roundedRect)
     private let primaryTextLabel = UILabel()
-    private let numberOfCommentsLabel = UILabel()
-    private let separator = UIView()
-    private let commentImageView = UIImageView()
-    private let commentLabel = UILabel()
-    private let shareImageView = UIImageView()
-    private let shareLabel = UILabel()
     private let shareButton = UIButton(type: .roundedRect)
+    
+    private var post: Post?
+    private var countLabel = UILabel()
+    private let countBackground = UIView()
+    private var collectionViewHeightAnchor: NSLayoutConstraint?
+    
+    private lazy var  collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        return collectionView
+    }()
     
     
     override func prepareForReuse() {
@@ -45,7 +54,7 @@ class FeedTextOnlyCell: UITableViewCell {
     func configure(post: Post, details: Bool = false, moreButtonAction:@escaping GenericAction, shareButtonAction: @escaping GenericAction) {
         self.moreAction = moreButtonAction
         self.shareAction = shareButtonAction
-        
+        self.post = post
         if let urlString = post.authorImgUrl {
             profileImageView.sd_setImage(with: URL(string: urlString), placeholderImage: nil)
         } else {
@@ -67,15 +76,16 @@ class FeedTextOnlyCell: UITableViewCell {
         
         primaryTextLabel.text = post.text
         
-        if post.commentCount == 0 {
-            numberOfCommentsLabel.text = "Be the first to comment"
-        } else if post.commentCount == 1 {
-            numberOfCommentsLabel.text = "1 comment"
+        if let urls = post.imageUrls, !urls.isEmpty {
+            collectionViewHeightAnchor?.constant = UIScreen.main.bounds.width
+            countBackground.isHidden = false
+            countLabel.isHidden = false
+            countLabel.text = "1/\(urls.count)"
         } else {
-            numberOfCommentsLabel.text = "\(post.commentCount) comments"
+            collectionViewHeightAnchor?.constant = 0.0
+            countBackground.isHidden = true
+            countLabel.isHidden = true
         }
-        
-        
     }
     
 }
@@ -88,12 +98,11 @@ private extension FeedTextOnlyCell {
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.backgroundColor = .white
-        containerView.layer.cornerRadius = 6.0
         containerView.layer.applySketchShadow(color: .color(.shadowColor), alpha: 1.0, x: 0.0, y: 2.0, blur: 6.0, spread: 0.0)
         contentView.addSubview(containerView)
         
-        containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12.0).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12.0).isActive = true
+        containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0.0).isActive = true
+        containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0.0).isActive = true
         containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 7.0).isActive = true
         containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -7.0).isActive = true
         
@@ -107,9 +116,6 @@ private extension FeedTextOnlyCell {
         profileImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,constant: 14.0).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 46.0).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 46.0).isActive = true
-        
-        
-//        containerView.heightAnchor.constraint(equalToConstant: 200.0).isActive = true
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
@@ -152,86 +158,48 @@ private extension FeedTextOnlyCell {
         primaryTextLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,constant: 14.0).isActive = true
         primaryTextLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -14.0).isActive = true
         
-        numberOfCommentsLabel.translatesAutoresizingMaskIntoConstraints = false
-        numberOfCommentsLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .medium)
-        numberOfCommentsLabel.textColor = UIColor.color(.secondaryTextColor)
-        containerView.addSubview(numberOfCommentsLabel)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(SingleImageCell.self, forCellWithReuseIdentifier: SingleImageCell.reuseIdentifier())
+        contentView.addSubview(collectionView)
         
-        numberOfCommentsLabel.topAnchor.constraint(equalTo: primaryTextLabel.bottomAnchor, constant: 12.0).isActive = true
-        numberOfCommentsLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 14.0).isActive = true
+        collectionView.topAnchor.constraint(equalTo: primaryTextLabel.bottomAnchor, constant: 14.0).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        collectionViewHeightAnchor = collectionView.heightAnchor.constraint(equalToConstant: 0.0)
+        collectionViewHeightAnchor?.isActive = true
         
         
-        separator.translatesAutoresizingMaskIntoConstraints = false
-        separator.backgroundColor = UIColor.color(.primaryTextColor).withAlphaComponent(0.10)
-        containerView.addSubview(separator)
+        countBackground.translatesAutoresizingMaskIntoConstraints = false
+        countBackground.backgroundColor = .color(.primaryTextColor)
+        countBackground.layer.cornerRadius = 13.0
+        contentView.addSubview(countBackground)
         
-        separator.topAnchor.constraint(equalTo: numberOfCommentsLabel.bottomAnchor, constant: 10.0).isActive = true
-        separator.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        separator.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        separator.heightAnchor.constraint(equalToConstant: 1.0).isActive = true
+        countBackground.topAnchor.constraint(equalTo: collectionView.topAnchor, constant: 14.0).isActive = true
+        countBackground.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor, constant: -14.0).isActive = true
+        countBackground.heightAnchor.constraint(equalToConstant: 26.0).isActive = true
+        countBackground.widthAnchor.constraint(equalToConstant: 34.0).isActive = true
         
-        commentImageView.translatesAutoresizingMaskIntoConstraints = false
-        commentImageView.contentMode = .scaleAspectFit
-        commentImageView.image = UIImage(named: "Comment Icon")
-        containerView.addSubview(commentImageView)
+        countLabel.translatesAutoresizingMaskIntoConstraints = false
+        countLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .medium)
+        countLabel.textColor = .white
+        countBackground.addSubview(countLabel)
         
-        commentImageView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 14.0).isActive = true
-        commentImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 14.0).isActive = true
-        commentImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -14.0).isActive = true
-        commentImageView.widthAnchor.constraint(equalToConstant: 23.0).isActive = true
-        commentImageView.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
-        
-        commentLabel.translatesAutoresizingMaskIntoConstraints = false
-        commentLabel.font = UIFont.systemFont(ofSize: 17.0, weight: .medium)
-        commentLabel.textColor = UIColor.color(.primaryTextColor).withAlphaComponent(0.60)
-        commentLabel.text = "Comment"
-        containerView.addSubview(commentLabel)
-        
-        commentLabel.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 14.0).isActive = true
-        commentLabel.leadingAnchor.constraint(equalTo: commentImageView.trailingAnchor, constant: 6.0).isActive = true
-        commentLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
-        
-        shareImageView.translatesAutoresizingMaskIntoConstraints = false
-        shareImageView.contentMode = .scaleAspectFit
-        shareImageView.image = UIImage(named: "Share Icon")
-        containerView.addSubview(shareImageView)
-        
-        shareImageView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 14.0).isActive = true
-        
-        shareImageView.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
-        shareImageView.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
-        
-        shareLabel.translatesAutoresizingMaskIntoConstraints = false
-        shareLabel.font = UIFont.systemFont(ofSize: 17.0, weight: .medium)
-        shareLabel.textColor = UIColor.color(.primaryTextColor).withAlphaComponent(0.60)
-        shareLabel.text = "Share"
-        containerView.addSubview(shareLabel)
-        
-        shareLabel.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 14.0).isActive = true
-        shareLabel.leadingAnchor.constraint(equalTo: shareImageView.trailingAnchor, constant: 6.0).isActive = true
-        shareLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
+        countLabel.centerYAnchor.constraint(equalTo: countBackground.centerYAnchor).isActive = true
+        countLabel.centerXAnchor.constraint(equalTo: countBackground.centerXAnchor).isActive = true
         
         shareButton.translatesAutoresizingMaskIntoConstraints = false
+        shareButton.setImage(UIImage(named: "Share Icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
         shareButton.addTarget(self, action: #selector(shareButtonAction), for: .touchUpInside)
         containerView.addSubview(shareButton)
         
-        shareButton.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 0.0).isActive = true
+        shareButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 12.0).isActive = true
+        shareButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 5.0).isActive = true
+        shareButton.heightAnchor.constraint(equalToConstant: 36.0).isActive = true
+        shareButton.widthAnchor.constraint(equalToConstant: 36.0).isActive = true
+        shareButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -14.0).isActive = true
         
-        shareButton.trailingAnchor.constraint(equalTo: shareLabel.trailingAnchor).isActive = true
-        shareButton.heightAnchor.constraint(equalToConstant: 48.0).isActive = true
-        
-        if !FeatureFlag.comments.enabled() {
-            commentLabel.isHidden = true
-            commentImageView.isHidden = true
-            numberOfCommentsLabel.isHidden = true
-            shareImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 14.0).isActive = true
-            shareButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 14.0).isActive = true
-            numberOfCommentsLabel.heightAnchor.constraint(equalToConstant: 0.0).isActive = true
-        } else {
-            shareImageView.leadingAnchor.constraint(equalTo: commentLabel.trailingAnchor, constant: 28.0).isActive = true
-            shareButton.leadingAnchor.constraint(equalTo: commentLabel.trailingAnchor, constant: 28.0).isActive = true
-            numberOfCommentsLabel.heightAnchor.constraint(equalToConstant: 16.0).isActive = true
-        }
     }
     
 }
@@ -248,4 +216,56 @@ private extension FeedTextOnlyCell {
     func shareButtonAction() {
         shareAction?()
     }
+}
+
+extension FeedTextOnlyCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let post = post, let urls = post.imageUrls, !urls.isEmpty else {
+            return 0
+        }
+        return urls.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SingleImageCell.reuseIdentifier(), for: indexPath)
+        
+        if let cell = cell as? SingleImageCell, let post = post, let urls = post.imageUrls, let url = urls[safe: indexPath.row] {
+            cell.configure(urlString: url)
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset)
+        let w = UIScreen.main.bounds.width
+        guard let post = post, let urls = post.imageUrls, !urls.isEmpty else {
+            return
+        }
+        if scrollView.contentOffset.x == 0.0 {
+            countLabel.text = "1/\(urls.count)"
+        } else {
+            var page = Int(scrollView.contentOffset.x / w)
+            page += 1
+            countLabel.text = "\(page)/\(urls.count)"
+        }
+    }
+    
 }

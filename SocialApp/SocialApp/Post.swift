@@ -20,6 +20,7 @@ struct Post: SMAObject {
     var deniedBy: String?
     var moderated: Bool
     var reportedBy: [String]
+    var imageUrls: [String]?
     var created: Double
     var createdBy: String
     var lastUpdated: Double

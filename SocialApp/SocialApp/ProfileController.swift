@@ -203,8 +203,6 @@ extension ProfileController:PHPickerViewControllerDelegate {
                     guard let self = self else { return }
                     if let image = image as? UIImage {
                         self.profileImageView.image = image
-                        
-                        
                         guard let data = image.jpegData(compressionQuality: 0.5) else { return }
                         let ident = UUID().uuidString
 

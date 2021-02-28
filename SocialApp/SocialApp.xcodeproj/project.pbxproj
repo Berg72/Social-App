@@ -21,6 +21,11 @@
 		D9240B5925B6E149005FC3FB /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9240B5825B6E149005FC3FB /* Post.swift */; };
 		D9240BAA25B6EDC9005FC3FB /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9240BA925B6EDC9005FC3FB /* Encodable.swift */; };
 		D9240BAF25B6EDDE005FC3FB /* DocumentSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9240BAE25B6EDDE005FC3FB /* DocumentSnapshot.swift */; };
+		D969B18525E59DB400E6BC47 /* ComposeTextEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D969B18425E59DB400E6BC47 /* ComposeTextEntryCell.swift */; };
+		D969B2A725E89C5800E6BC47 /* ComposeImagesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D969B2A625E89C5800E6BC47 /* ComposeImagesCell.swift */; };
+		D969B2AC25E8A00900E6BC47 /* SingleImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D969B2AB25E8A00900E6BC47 /* SingleImageCell.swift */; };
+		D969B2B125E8A05000E6BC47 /* UICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D969B2B025E8A05000E6BC47 /* UICollectionViewCell.swift */; };
+		D969B2D525EAF14200E6BC47 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = D969B2D425EAF14200E6BC47 /* Array.swift */; };
 		D97BCF6925DCC11D00D31172 /* AlertsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97BCF6825DCC11D00D31172 /* AlertsController.swift */; };
 		D97BCF7225DCC6D700D31172 /* AlertCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97BCF7125DCC6D700D31172 /* AlertCell.swift */; };
 		D97BCF7D25DE90B200D31172 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97BCF7C25DE90B200D31172 /* Alert.swift */; };
@@ -80,6 +85,11 @@
 		D9240B5825B6E149005FC3FB /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		D9240BA925B6EDC9005FC3FB /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
 		D9240BAE25B6EDDE005FC3FB /* DocumentSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentSnapshot.swift; sourceTree = "<group>"; };
+		D969B18425E59DB400E6BC47 /* ComposeTextEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeTextEntryCell.swift; sourceTree = "<group>"; };
+		D969B2A625E89C5800E6BC47 /* ComposeImagesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeImagesCell.swift; sourceTree = "<group>"; };
+		D969B2AB25E8A00900E6BC47 /* SingleImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageCell.swift; sourceTree = "<group>"; };
+		D969B2B025E8A05000E6BC47 /* UICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCell.swift; sourceTree = "<group>"; };
+		D969B2D425EAF14200E6BC47 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		D97BCF6825DCC11D00D31172 /* AlertsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsController.swift; sourceTree = "<group>"; };
 		D97BCF7125DCC6D700D31172 /* AlertCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertCell.swift; sourceTree = "<group>"; };
 		D97BCF7C25DE90B200D31172 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
@@ -154,7 +164,7 @@
 			children = (
 				D9A7C2DE25C7400E0040CC15 /* Moderation */,
 				D9240AD625B1C18B005FC3FB /* HomeController.swift */,
-				D97DAC7925BE0C4100B2FF1D /* ComposeController.swift */,
+				D969B18225E59D4B00E6BC47 /* Composer */,
 				D97BCFAC25E1D82D00D31172 /* PostDetailsController.swift */,
 				D9240B1325B2AF60005FC3FB /* Cells */,
 			);
@@ -165,10 +175,12 @@
 			isa = PBXGroup;
 			children = (
 				D9240ADF25B1C4EE005FC3FB /* UITableViewCell.swift */,
+				D969B2B025E8A05000E6BC47 /* UICollectionViewCell.swift */,
 				D9240B1C25B2B310005FC3FB /* UIColor.swift */,
 				D9240B3325B2B8C4005FC3FB /* CALayer.swift */,
 				D9240BA925B6EDC9005FC3FB /* Encodable.swift */,
 				D9240BAE25B6EDDE005FC3FB /* DocumentSnapshot.swift */,
+				D969B2D425EAF14200E6BC47 /* Array.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -190,6 +202,25 @@
 				D9240B5825B6E149005FC3FB /* Post.swift */,
 			);
 			name = Database;
+			sourceTree = "<group>";
+		};
+		D969B18225E59D4B00E6BC47 /* Composer */ = {
+			isa = PBXGroup;
+			children = (
+				D97DAC7925BE0C4100B2FF1D /* ComposeController.swift */,
+				D969B18325E59D6D00E6BC47 /* Cells */,
+			);
+			name = Composer;
+			sourceTree = "<group>";
+		};
+		D969B18325E59D6D00E6BC47 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D969B18425E59DB400E6BC47 /* ComposeTextEntryCell.swift */,
+				D969B2A625E89C5800E6BC47 /* ComposeImagesCell.swift */,
+				D969B2AB25E8A00900E6BC47 /* SingleImageCell.swift */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		D97BCF6725DCC10D00D31172 /* Alerts */ = {
@@ -580,6 +611,7 @@
 				D999C4832596E16E00D317CE /* AppDelegate.swift in Sources */,
 				D999C4852596E16E00D317CE /* SceneDelegate.swift in Sources */,
 				D9A7C38525C7AEDA0040CC15 /* ProfileController.swift in Sources */,
+				D969B2A725E89C5800E6BC47 /* ComposeImagesCell.swift in Sources */,
 				D97BCF7D25DE90B200D31172 /* Alert.swift in Sources */,
 				D9240B5925B6E149005FC3FB /* Post.swift in Sources */,
 				D9A7C2E025C740340040CC15 /* ModerationController.swift in Sources */,
@@ -590,12 +622,16 @@
 				D9240AD125ABDC80005FC3FB /* Tabbar.swift in Sources */,
 				D9A7C42125CC27970040CC15 /* FeatureFlag.swift in Sources */,
 				D97BCF6925DCC11D00D31172 /* AlertsController.swift in Sources */,
+				D969B2AC25E8A00900E6BC47 /* SingleImageCell.swift in Sources */,
 				D9240B5425B6E13D005FC3FB /* User.swift in Sources */,
 				D97DAC7A25BE0C4100B2FF1D /* ComposeController.swift in Sources */,
 				D9DDC4DC25D08CBF009226E7 /* SettingsController.swift in Sources */,
+				D969B2D525EAF14200E6BC47 /* Array.swift in Sources */,
 				D9DDC50025D097F4009226E7 /* WebController.swift in Sources */,
 				D97BCF7225DCC6D700D31172 /* AlertCell.swift in Sources */,
 				D97BCFAD25E1D82D00D31172 /* PostDetailsController.swift in Sources */,
+				D969B2B125E8A05000E6BC47 /* UICollectionViewCell.swift in Sources */,
+				D969B18525E59DB400E6BC47 /* ComposeTextEntryCell.swift in Sources */,
 				D9240AD725B1C18B005FC3FB /* HomeController.swift in Sources */,
 				D9240AE025B1C4EE005FC3FB /* UITableViewCell.swift in Sources */,
 				D9240B3425B2B8C4005FC3FB /* CALayer.swift in Sources */,
@@ -769,7 +805,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SocialApp/SocialApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = A26JZG9Y29;
 				INFOPLIST_FILE = SocialApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -793,7 +829,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SocialApp/SocialApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = A26JZG9Y29;
 				INFOPLIST_FILE = SocialApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
